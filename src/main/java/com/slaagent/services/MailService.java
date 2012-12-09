@@ -28,11 +28,11 @@ public class MailService {
     public void sendPlainEmail(String mailToAddress, String subject, String messageText) {
 
         Properties props = PropertiesService.getInstance().getProperties();
-        String host = "msg.jelastic.com",//props.getProperty("smtp.host"),
+        String host = props.getProperty("smtp.host"),
                 username = props.getProperty("smtp.username"),
                 password = props.getProperty("smtp.password"),
                 addressFrom = props.getProperty("smtp.sentfrom.address"), result = "";
-        int port = 25;//Integer.parseInt(props.getProperty("smtp.port"));
+        int port = Integer.parseInt(props.getProperty("smtp.port"));
 
         Session session = Session.getInstance(props);
 
