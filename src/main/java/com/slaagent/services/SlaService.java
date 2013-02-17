@@ -156,8 +156,8 @@ public class SlaService {
             System.out.println(ds.getConnection());
             ResultSet rs = statement.executeQuery("SELECT * FROM community.ipbtopics WHERE "
                     + "ipbtopics.state NOT LIKE 'closed' AND ipbtopics.last_poster_id "
-                    + "NOT IN (select member_id from community.ipbmembers where member_group_id "
-                    + "IN (9))");
+                    + "IN (select member_id from community.ipbmembers where member_group_id "
+                    + "= 9)");
 
             StringBuffer sb = new StringBuffer();
             int count = 0;
