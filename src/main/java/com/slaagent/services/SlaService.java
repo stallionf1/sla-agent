@@ -148,6 +148,64 @@ public class SlaService {
         }
     }
 
+    public void getOpenedTopicsLastCommentPartner() {
+            DatabaseService ds = DatabaseService.getInstance();
+        try {
+            Statement statement;
+            statement = ds.getConnection().createStatement();
+            System.out.println(ds.getConnection());
+            ResultSet rs = statement.executeQuery("SELECT * FROM community.ipbtopics WHERE "
+                    + "ipbtopics.state NOT LIKE 'closed' AND ipbtopics.last_poster_id "
+                    + "NOT IN (select member_id from community.ipbmembers where member_group_id "
+                    + "IN (9))");
+
+            StringBuffer sb = new StringBuffer();
+            int count = 0;
+
+            while (rs.next()) {
+                String topic_id = rs.getString("tid");
+                String link = "http://community.jelastic.com/index.php/topic/"+topic_id + "-"+rs.getString("title_seo");
+                String topic_status = rs.getString("state");
+                String topic_name = rs.getString("title");
+                String topic_starter_name = rs.getString("starter_name"), line = "";
+                Long l = rs.getLong("last_post");
+                int hours = getTimeDiffWithCurrentTime(l);
+
+               if (count == 0) {
+                    sb.append("id: " + topic_id + "\n"+"link: " + link + "\n" + "status: " + topic_status + "\nname: " + topic_name + "\nstarter: " + topic_starter_name
+                            + "\nhours since last post: " + hours + "\nSLA | Yellow: " + isYellow(hours) + "\nSLA | RED: " + isRed(hours));
+                    sb.append("\n---------------------------");
+                } else {
+                    sb.append("\nid: " + topic_id + "\n" +"link: " + link + "\n" + "status: " + topic_status + "\nname: " + topic_name + "\nstarter: " + topic_starter_name
+                            + "\nhours since last post: " + hours + "\nSLA | Yellow: " + isYellow(hours) + "\nSLA | RED: " + isRed(hours));
+                    sb.append("\n---------------------------");
+                }
+                count++;
+            }
+
+            //creating log file
+            Date date = new Date();
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+            String fileName = f.format(date) + ".last-comment-partner.sla.log";
+            FileService fs = new FileService();
+            fs.createFile(fileName, sb);
+
+            //sending email
+            MailService ms = MailService.getInstance();
+            SimpleDateFormat format = new SimpleDateFormat(DATE_HOURLY_PATTERN);
+            String subSubject = format.format(date).toString();
+            String subject = subSubject + " Community \\ SLA Notification";
+            for (String mailToAddress : supportTeamEmails) {
+                ms.sendPlainEmail(mailToAddress, subject, sb.toString());
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            ds.closeConnection();
+        }
+    }
+    
     public void getTopicsInRed() {
             DatabaseService ds = DatabaseService.getInstance();
         try {
