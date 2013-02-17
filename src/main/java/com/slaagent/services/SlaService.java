@@ -42,7 +42,7 @@ public class SlaService {
             ResultSet rs = statement.executeQuery("SELECT * FROM community.ipbtopics WHERE "
                     + "ipbtopics.state NOT LIKE 'closed' AND ipbtopics.last_poster_id "
                     + "NOT IN (select member_id from community.ipbmembers where member_group_id "
-                    + "IN (4,5,6,7))");
+                    + "IN (4,5,6,7,9))");
 
             StringBuffer sb = new StringBuffer();
             int count = 0;
@@ -99,14 +99,14 @@ public class SlaService {
             ResultSet rs = statement.executeQuery("SELECT * FROM community.ipbtopics WHERE "
                     + "ipbtopics.state NOT LIKE 'closed' AND ipbtopics.last_poster_id "
                     + "NOT IN (select member_id from community.ipbmembers where member_group_id "
-                    + "IN (4,5,6,7))");
+                    + "IN (4,5,6,7,9))");
 
             StringBuffer sb = new StringBuffer();
             int count = 0;
 
             while (rs.next()) {
                 String topic_id = rs.getString("tid");
-                String link = "http://http://community.jelastic.com/index.php/topic/"+topic_id + "-"+rs.getString("title_seo");
+                String link = "http://community.jelastic.com/index.php/topic/"+topic_id + "-"+rs.getString("title_seo");
                 String topic_status = rs.getString("state");
                 String topic_name = rs.getString("title");
                 String topic_starter_name = rs.getString("starter_name"), line = "";
@@ -157,7 +157,7 @@ public class SlaService {
             ResultSet rs = statement.executeQuery("SELECT * FROM community.ipbtopics WHERE "
                     + "ipbtopics.state NOT LIKE 'closed' AND ipbtopics.last_poster_id "
                     + "NOT IN (select member_id from community.ipbmembers where member_group_id "
-                    + "IN (4,5,6,7))");
+                    + "IN (4,5,6,7,9))");
 
             StringBuffer sb = new StringBuffer();
             int count = 0;
@@ -217,7 +217,7 @@ public class SlaService {
             ResultSet rs = statement.executeQuery("SELECT * FROM community.ipbtopics WHERE "
                     + "ipbtopics.state NOT LIKE 'closed' AND ipbtopics.last_poster_id "
                     + "NOT IN (select member_id from community.ipbmembers where member_group_id "
-                    + "IN (4,5,6,7))");
+                    + "IN (4,5,6,7,9))");
 
             StringBuffer sb = new StringBuffer();
             int count = 0;
