@@ -167,17 +167,18 @@ public class SlaService {
                 String link = "http://community.jelastic.com/index.php/topic/"+topic_id + "-"+rs.getString("title_seo");
                 String topic_status = rs.getString("state");
                 String topic_name = rs.getString("title");
+                String last_poster_name = rs.getString("last_poster_name");
                 String topic_starter_name = rs.getString("starter_name"), line = "";
                 Long l = rs.getLong("last_post");
                 int hours = getTimeDiffWithCurrentTime(l);
 
                if (count == 0) {
                     sb.append("id: " + topic_id + "\n"+"link: " + link + "\n" + "status: " + topic_status + "\nname: " + topic_name + "\nstarter: " + topic_starter_name
-                            + "\nhours since last post: " + hours + "\nSLA | Yellow: " + isYellow(hours) + "\nSLA | RED: " + isRed(hours));
+                            + "\nlast poster name: " + last_poster_name + "\nhours since last post: " + hours + "\nSLA | Yellow: " + isYellow(hours) + "\nSLA | RED: " + isRed(hours));
                     sb.append("\n---------------------------");
                 } else {
                     sb.append("\nid: " + topic_id + "\n" +"link: " + link + "\n" + "status: " + topic_status + "\nname: " + topic_name + "\nstarter: " + topic_starter_name
-                            + "\nhours since last post: " + hours + "\nSLA | Yellow: " + isYellow(hours) + "\nSLA | RED: " + isRed(hours));
+                            + "\nlast poster name: " + last_poster_name +" \nhours since last post: " + hours + "\nSLA | Yellow: " + isYellow(hours) + "\nSLA | RED: " + isRed(hours));
                     sb.append("\n---------------------------");
                 }
                 count++;
@@ -194,7 +195,7 @@ public class SlaService {
             MailService ms = MailService.getInstance();
             SimpleDateFormat format = new SimpleDateFormat(DATE_HOURLY_PATTERN);
             String subSubject = format.format(date).toString();
-            String subject = subSubject + " Community \\ SLA Notification";
+            String subject = subSubject + " Community \\ Partners activity \\ Notification";
             for (String mailToAddress : supportTeamEmails) {
                 ms.sendPlainEmail(mailToAddress, subject, sb.toString());
             }
