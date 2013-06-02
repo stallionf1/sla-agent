@@ -33,7 +33,7 @@ public class WeeklyJiraHostersReport {
     
     public void sendFridaysReport() {
         String pathToReports = properties.getProperty("reports.location");
-        String messageBody = "Hello Dmitry, <br/>This is weekly email which contains reports: <b>JIRA tickets reports by hoster</b> <br/ >Please see .xls files in the attachment.";
+        String messageBody = "Hello Dmitry, <br/>This is a weekly emails which contains: <b>JIRA ticket reports by hoster</b> <br/ >Please see .html files in the attachment.";
         Calendar sDateCalendar = new GregorianCalendar();
         int weekNumber = sDateCalendar.get(Calendar.WEEK_OF_YEAR);
 
@@ -51,7 +51,7 @@ public class WeeklyJiraHostersReport {
                 String emailTo = rs.getString(2);
                 String hosterName = rs.getString(3);
                 FileService fs = new FileService();
-                String fileName = hosterName + "-week-" + weekNumber + ".xls";
+                String fileName = hosterName + "-week-" + weekNumber + ".html";
                 fs.downloadFileByURL(filterUrl, pathToReports, fileName);
                 
                 files.add(new File(pathToReports+fileName));

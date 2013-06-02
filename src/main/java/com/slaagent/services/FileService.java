@@ -13,11 +13,14 @@ import java.net.URLConnection;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class FileService {
 
+    private static PropertiesService properties = PropertiesService.getInstance();
+    
     public FileService() {
     }
 
@@ -27,7 +30,7 @@ public class FileService {
 
             File file = new File(PropertiesService.getInstance().getProperties().getProperty("logs.files.path") + name);
             if (file.createNewFile()) {
-                System.out.println("File is created!");
+                System.out.println("File has been created!");
             } else {
                 System.out.println("File " + file.getName() + " already exists.");
                 System.out.println("deleting...");
@@ -91,7 +94,7 @@ public class FileService {
     public void downloadFileByURL(String urlString, String path, String fileName) {
         
         byte[] data = null;
-        int len = 1024 * 200; // 200 KB
+        int len = 1024 * 300; // 300 KB
 
         try {
             URL url = new URL(urlString);
